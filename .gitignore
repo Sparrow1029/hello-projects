@@ -1,0 +1,21 @@
+# Python files
+.Python
+*.py[cod]
+*.mo
+*.egg-info
+*.EGG
+*.EGG-INFO
+*.tmp*
+.mr.developer.cfg
+.svn
+bin
+lib
+include
+
+# Pip/Virtualenv
+pip-selfcheck.json
+
+# OS X temporary files
+.DS_Store
+.Trashes
+*.swp
