@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 
-from flask import render_template, flash, redirect
-from CRUDapp import app
+from flask import render_template, flash, redirect, session, url_for,request,g
+from flask_login import login_user, logout_user, current_user, login_required
+from CRUDapp import app, db, lm, oid
 from .forms import LoginForm
+from .models import User
 
 
 @app.route('/')
@@ -36,4 +38,9 @@ def login():
         return redirect('/index')
     return render_template('login.html',
                            title='Sign In',
-                           form=form)
+                           form=form,
+                           providers=app.config['OPENID_PROVIDERS'])
+
+@lm.user_loader
+def load_user(id):
+    return User.query.get(int(id))
