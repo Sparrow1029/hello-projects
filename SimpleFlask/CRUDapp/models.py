@@ -1,13 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from CRUDapp import db
+from CRUDapp import db, lm
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nickname = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    # posts = db.relationship('Post', backref='author', lazy='dynamic')
+    social_id = db.Column(db.String(64), nullable=False, unique=True)
+
+@lm.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
     @property
     def is_authenticated(self):
