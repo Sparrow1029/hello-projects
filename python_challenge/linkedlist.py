@@ -8,7 +8,7 @@ base_url = 'http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing='
 
 def find_nothing(url, num):
     url = url + num
-    txt = requests.get(url + num).conten.decode('utf-8')
+    txt = requests.get(url + num).content.decode('utf-8')
     print(txt)
     mo = re.search('and the next nothing is (\d+)', txt)
     if mo == None:
