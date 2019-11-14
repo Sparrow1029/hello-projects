@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.js"></script>
+  <title>Flask URL Shortener</title>
+</head>
+<body>
+  <div class="ui container">
+    <h1 class="ui header centered">Shorten that pesky URL</h1>
+    <form action="/shorten" method="POST">
+    <div class="ui fluid action input">
+      <input
+        name="raw_url"
+        placeholder="Paste url here"
+      />
+      <div class="ui button" type="submit">Shorten</div>
+    </div>
+    </form>
+    {% if url|length and link|length %}
+    <div class="ui message">
+      <div class="header">Your shortened url:</div>
+      <a href="{{ link }}">{{ url }}</a>
+    </div>
+    {% endif %}
+    {% if all_links %}
+    <div class="ui segment">
+      <h2 class="ui header">All Links in db:</h2>
+      <div class="ui list">
+        {% for db_link in all_links %}
+        <div class="item">
+          <div class="content">
+            <a class="header" href="{{ db_link['full'] }}">{{ db_link['short'] }}</a>
+            <div class="description">Full link: {{ db_link['full'] }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>
