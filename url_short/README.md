@@ -6,10 +6,11 @@ From PyBites code challenge #61: [Build a URL Shortener](https://pybit.es/codech
 ```
 $ cd url_short
 $ mkvirtualenv urls
-$ pip install -r requirements.txt
-$ flask shell
+(urls) $ pip install -r requirements.txt
+(urls) $ export FLASK_APP=shortener.py
+(urls) $ flask shell
 >>> from shortener import init_db
 >>> init_db()
 >>> exit()
-$ flask run
+(urls) $ flask run
 ```
