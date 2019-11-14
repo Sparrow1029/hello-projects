@@ -1,0 +1,4 @@
+!.gitignore
+urls.db
+*.py[co]
+__pycache__

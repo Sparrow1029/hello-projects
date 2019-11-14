@@ -1,18 +1,13 @@
-# import random
-# from hashlib import sha256
-# from string import ascii_letters, digits
-
 import sqlite3
 import short_url
-from flask import Flask, render_template, request, g  # jsonify, redirect, url_for
-# from flask_restful import Resource, Api
+from flask import Flask, render_template, request, g
 
 app = Flask(__name__)
 DATABASE = './urls.db'
 
 
 def get_db():
-    db = getattr(g, '_databse', None)
+    db = getattr(g, '_database', None)
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
     db.row_factory = sqlite3.Row
@@ -21,7 +16,7 @@ def get_db():
 
 @app.teardown_appcontext
 def close_connection(exception):
-    db = getattr(g, '_databse', None)
+    db = getattr(g, '_database', None)
     if db is not None:
         db.close()
 
@@ -64,7 +59,8 @@ def shorten():
     db = get_db()
     db.cursor().execute(f"INSERT INTO urls(short, full) VALUES('{short}', '{raw_url}');")
     db.commit()
-    return render_template('index.html', url=short, link=raw_url)
+    return render_template('index.html', url=short, link=raw_url,
+                           all_links=[link for link in query_db('select * from urls')])
 
 
 if __name__ == '__main__':
