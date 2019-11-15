@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import short_url
 from flask import Flask, render_template, request, g
@@ -31,12 +32,18 @@ def query_db(query, args=(), one=False):
 def init_db():
     with app.app_context():
         db = get_db()
-        with app.open_resource('urls.sql', mode='r') as f:
-            db.cursor().executescript(f.read())
-            first_url = 'pybit.es/' + short_url.encode_url(1)
-            db.cursor().execute(f"""INSERT INTO urls(short, full)
-                                    VALUES('{first_url}', 'http://example.com');""")
-        db.commit()
+        try:
+            with app.open_resource('urls.sql', mode='r') as f:
+                if not os.path.exists('urls.db'):
+                    with open('urls.db', 'w'):
+                        pass
+                db.cursor().executescript(f.read())
+                first_url = 'pybit.es/' + short_url.encode_url(1)
+                db.cursor().execute(f"""INSERT INTO urls(short, full)
+                                        VALUES('{first_url}', 'http://example.com');""")
+                db.commit()
+        except sqlite3.OperationalError as e:
+            print(f"Error: {e}")
 
 
 def get_last_record_id():
